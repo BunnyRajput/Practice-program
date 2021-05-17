@@ -671,4 +671,207 @@ class Apple(builtins.object)
 ...     return hours*3600+minutes*60+seconds
 ... 
 
+Object Inheritance
+In object-oriented programming, the concept of inheritance allows you to build relationships between objects, grouping together similar concepts and reducing code duplication. Let's create a custom Fruit class with color and flavor attributes:
+>>> class Fruit:
+...     def __init__(self, color, flavor):
+...         self.color = color
+...         self.flavor = flavor
+...
+We defined a Fruit class with a constructor for color and flavor attributes. Next, we'll define an Apple class along with a new Grape class, both of which we want to inherit properties and behaviors from the Fruit class:
+>>> class Apple(Fruit):
+...     pass
+... 
+>>> class Grape(Fruit):
+...     pass
+... 
+In Python, we use parentheses in the class declaration to have the class inherit from the Fruit class. So in this example, we’re instructing our computer that both the Apple class and Grape class inherit from the Fruit class. This means that they both have the same constructor method which sets the color and flavor attributes. We can now create instances of our Apple and Grape classes:
+>>> granny_smith = Apple("green", "tart")
+>>> carnelian = Grape("purple", "sweet")
+>>> print(granny_smith.flavor)
+tart
+>>> print(carnelian.color)
+purple
+Inheritance allows us to define attributes or methods that are shared by all types of fruit without having to define them in each fruit class individually. We can then also define specific attributes or methods that are only relevant for a specific type of fruit. Let's look at another example, this time with animals:
+>>> class Animal:
+...     sound = ""
+...     def __init__(self, name):
+...         self.name = name
+...     def speak(self):
+...         print("{sound} I'm {name}! {sound}".format(
+...             name=self.name, sound=self.sound))
+... 
+>>> class Piglet(Animal):
+...     sound = "Oink!"
+... 
+>>> class Cow(Animal):
+...     sound = "Moooo"
+...
+We defined a parent class, Animal, with two animal types inheriting from that class: Piglet and Cow. The parent Animal class has an attribute to store the sound the animal makes, and the constructor class takes the name that will be assigned to the instance when it's created. There is also the speak method, which will print the name of the animal along with the sound it makes. We defined the Piglet and Cow classes, which inherit from the Animal class, and we set the sound attributes for each animal type. Now, we can create instances of our Piglet and Cow classes and have them speak:
+>>> hamlet = Piglet("Hamlet")
+>>> hamlet.speak()
+Oink! I'm Hamlet! Oink!
+... 
+>>> class Cow(Animal):
+...     sound = "Moooo"
+... 
+>>> milky = Cow("Milky White")
+>>> milky.speak()
+Moooo I'm Milky White! Moooo
+Object Composition
+
+You can have a situation where two different classes are related, but there is no inheritance going on. This is referred to as composition -- where one class makes use of code contained in another class. For example, imagine we have a Package class which represents a software package. It contains attributes about the software package, like name, version, and size. We also have a Repository class which represents all the packages available for installation. While there’s no inheritance relationship between the two classes, they are related. The Repository class will contain a dictionary or list of Packages that are contained in the repository. Let's take a look at an example Repository class definition:
+>>> class Repository:
+...      def __init__(self):
+...          self.packages = {}
+...      def add_package(self, package):
+...          self.packages[package.name] = package
+...      def total_size(self):
+...          result = 0
+...          for package in self.packages.values():
+...              result += package.size
+...          return result
+10
+>>> class Repository:
+...      def __init__(self):
+...          self.packages = {}
+...      def add_package(self, package):
+...          self.packages[package.name] = package
+...      def total_size(self):
+...          result = 0
+...          for package in self.packages.values():
+...              result += package.size
+...          return result
+In the constructor method, we initialize the packages dictionary, which will contain the package objects available in this repository instance. We initialize the dictionary in the constructor to ensure that every instance of the Repository class has its own dictionary.
+
+We then define the add_package method, which takes a Package object as a parameter, and then adds it to our dictionary, using the package name attribute as the key.
+
+Finally, we define a total_size method which computes the total size of all packages contained in our repository. This method iterates through the values in our repository dictionary and adds together the size attributes from each package object contained in the dictionary, returning the total at the end. In this example, we’re making use of Package attributes within our Repository class. We’re also calling the values() method on our packages dictionary instance. Composition allows us to use objects as attributes, as well as access all their attributes and methods.
+Augmenting Python with Modules
+Python modules are separate files that contain classes, functions, and other data that allow us to import and make use of these methods and classes in our own code. Python comes with a lot of modules out of the box. These modules are referred to as the Python Standard Library. You can make use of these modules by using the import keyword, followed by the module name. For example, we'll import the random module, and then call the randint function within this module:
+>>> import random
+>>> random.randint(1,10)
+8
+>>> random.randint(1,10)
+7
+>>> random.randint(1,10)
+This function takes two integer parameters and returns a random integer between the values we pass it; in this case, 1 and 10. You might notice that calling functions in a module is very similar to calling methods in a class. We use dot notation here too, with a period between the module and function names.
+
+Let's take a look at another module: datetime. This module is super helpful when working with dates and times.
+>>> import datetime
+>>> now = datetime.datetime.now()
+>>> type(now)
+<class 'datetime.datetime'>
+>>> print(now)
+2019-04-24 16:54:55.155199
+First, we import the module. Next, we call the now() method which belongs to the datetime class contained within the datetime module. This method generates an instance of the datetime class for the current date and time. This instance has some methods which we can call:
+>>> print(now)
+2019-04-24 16:54:55.155199
+>>> now.year
+2019
+>>> print(now + datetime.timedelta(days=28))
+2019-05-22 16:54:55.155199
+When we call the print function with an instance of the datetime class, we get the date and time printed in a specific format. This is because the datetime class has a __str__ method defined which generates the formatted string we see here. We can also directly call attributes and methods of the class, as with now.year which returns the year attribute of the instance.
+
+Lastly, we can access other classes contained in the datetime module, like the timedelta class. In this example, we’re creating an instance of the timedelta class with the parameter of 28 days. We’re then adding this object to our instance of the datetime class from earlier and printing the result. This has the effect of adding 28 days to our original datetime object.
+
+Practice Notebook - Putting It All Together¶
+Hello, coders! Below we have code similar to what we wrote in the last video. Go ahead and run the following cell that defines our get_event_date, current_users and generate_report methods.
+
+def get_event_date(event):
+  return event.date
+
+def current_users(events):
+  events.sort(key=get_event_date)
+  machines = {}
+  for event in events:
+    if event.machine not in machines:
+      machines[event.machine] = set()
+    if event.type == "login":
+      machines[event.machine].add(event.user)
+    elif event.type == "logout":
+      machines[event.machine].remove(event.user)
+  return machines
+
+def generate_report(machines):
+  for machine, users in machines.items():
+    if len(users) > 0:
+      user_list = ", ".join(users)
+      print("{}: {}".format(machine, user_list))
+def get_event_date(event):
+  return event.date
+​
+def current_users(events):
+  events.sort(key=get_event_date)
+  machines = {}
+  for event in events:
+    if event.machine not in machines:
+      machines[event.machine] = set()
+    if event.type == "login":
+      machines[event.machine].add(event.user)
+    elif event.type == "logout":
+      machines[event.machine].remove(event.user)
+  return machines
+​
+def generate_report(machines):
+  for machine, users in machines.items():
+    if len(users) > 0:
+      user_list = ", ".join(users)
+      print("{}: {}".format(machine, user_list))
+No output should be generated from running the custom function definitions above. To check that our code is doing everything it's supposed to do, we need an Event class. The code in the next cell below initializes our Event class. Go ahead and run this cell next.
+
+class Event:
+  def __init__(self, event_date, event_type, machine_name, user):
+    self.date = event_date
+    self.type = event_type
+    self.machine = machine_name
+    self.user = user
+Ok, we have an Event class that has a constructor and sets the necessary attributes. Next let's create some events and add them to a list by running the following cell.
+
+events = [
+    Event('2020-01-21 12:45:56', 'login', 'myworkstation.local', 'jordan'),
+    Event('2020-01-22 15:53:42', 'logout', 'webserver.local', 'jordan'),
+    Event('2020-01-21 18:53:21', 'login', 'webserver.local', 'lane'),
+    Event('2020-01-22 10:25:34', 'logout', 'myworkstation.local', 'jordan'),
+    Event('2020-01-21 08:20:01', 'login', 'webserver.local', 'jordan'),
+    Event('2020-01-23 11:24:35', 'logout', 'mailserver.local', 'chris'),
+]
+Now we've got a bunch of events. Let's feed these events into our custom_users function and see what happens.
+
+users = current_users(events)
+print(users)
+Uh oh. The code in the previous cell produces an error message. This is because we have a user in our events list that was logged out of a machine he was not logged into. Do you see which user this is? Make edits to the first cell containing our custom function definitions to see if you can fix this error message. There may be more than one way to do so.
+
+Remember when you have finished making your edits, rerun that cell as well as the cell that feeds the events list into our custom_users function to see whether the error message has been fixed. Once the error message has been cleared and you have correctly outputted a dictionary with machine names as keys, your custom functions are properly finished. Great!
+
+Now try generating the report by running the next cell.
+
+generate_report(users)
+Whoop whoop! Success! The error message has been cleared and the desired output is produced. You are all done with this practice notebook. Way to go!
+
+Final Project Help
+Project goal 
+Create a dictionary with words and word frequencies that can be passed to the generate_from_frequencies function of the WordCloud class.
+
+Once you have the dictionary, use this code to generate the word cloud image:
+
+123
+cloud = wordcloud.WordCloud()
+cloud.generate_from_frequencies(frequencies)
+cloud.to_file("myfile.jpg")
+Things to remember 
+Before processing any text, you need to remove all the punctuation marks. To do this, you can go through each line of text, character-by-character, using the isalpha() method. This will check whether or not the character is a letter.
+To split a line of text into words, you can use the split() method.
+Before storing words in the frequency dictionary, check if they’re part of the "uninteresting" set of words (for example: "a", "the", "to", "if"). Make this set a parameter to your function so that you can change it if necessary.
+Input file
+For the input file, you need to provide a file that contains text only. For the text itself, you can copy and paste the contents of a website you like. Or you can use a site like Project Gutenberg to find books that are available online. You could see what word clouds you can get from famous books, like a Shakespeare play or a novel by Jane Austen.
+
+Jupyter Notebooks Help
+Remember that if you need help with Jupyter Notebooks, you can check out this help page.
+
+
+
+      
+![image](https://user-images.githubusercontent.com/40121294/118472495-87ce0c00-b726-11eb-93c1-c6bbe7840614.png)
+
 
